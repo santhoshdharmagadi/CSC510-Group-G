@@ -11,6 +11,10 @@ export default class enterpriseService {
         return this.http.post('http://localhost:3000/enterprise/updateCoinsPerHour',
             {coinsPerHour: coinsPerHour, username: username});
     }
+
+    uploadVideoDetails(videoDetails) {
+        return this.http.post('http://localhost:3000/enterprise/videoDetails', videoDetails);
+    }
 }
 
 
