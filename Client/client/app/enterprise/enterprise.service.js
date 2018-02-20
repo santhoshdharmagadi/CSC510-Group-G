@@ -3,12 +3,13 @@ export default class enterpriseService {
         this.http = $http;
     }
 
-    addCoins(coins) {
-        return this.http.post('http://localhost:3000/enterprise/addCoins', {coins: coins});
+    addCoins(coins, username) {
+        return this.http.post('http://localhost:3000/enterprise/addCoins', {coins: coins, username: username});
     }
 
-    updateCoinsPerHour(coinsPerHour) {
-        return this.http.post('http://localhost:3000/enterprise/updateCoinsPerHour', {coinsPerHour: coinsPerHour});
+    updateCoinsPerHour(coinsPerHour, username) {
+        return this.http.post('http://localhost:3000/enterprise/updateCoinsPerHour',
+            {coinsPerHour: coinsPerHour, username: username});
     }
 }
 

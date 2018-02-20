@@ -4,13 +4,15 @@ import enterpriseService from './enterprise.service';
 import loginService from './../Login/login.service';
 
 export default class enterpriseCtrl {
-    constructor($state, Upload, enterpriseService, loginService) {
+    constructor($state, Upload, enterpriseService, loginService, $stateParams) {
         this.state = $state;
+        this.$stateParams = $stateParams;
         this.uploadService = Upload;
         this.enterpriseService = enterpriseService;
         this.loginService = loginService;
         this.selectedFile = {};
         this.updateType = 'password';
+        this.updatedCoinsPerHour = 0;
         this.updateProfile = {
           oldPassword: '',
           newPassword: '',
@@ -30,30 +32,33 @@ export default class enterpriseCtrl {
     }
 
     addCoins() {
-        this.enterpriseService.addCoins(this.coinsToBeAdded)
+        this.enterpriseService.addCoins(this.coinsToBeAdded, this.$stateParams.id)
             .then((response) => {
-                console.log(response);
+                this.coinsToBeAdded = 0;
             }).catch((response) => {
                 console.log(response);
             });
     }
 
     updateCoinsPerHour() {
-        this.enterpriseService.updateCoinsPerHour(this.updatedCoinsPerHour)
+        this.enterpriseService.updateCoinsPerHour(this.updatedCoinsPerHour, this.$stateParams.id)
             .then((response) => {
-                console.log(response);
+                this.updatedCoinsPerHour = 0;
             }).catch((response) => {
             console.log(response);
         });
     }
 
     uploadVideo() {
+        this.showLoading = true;
         this.uploadService.upload({url: 'http://localhost:3000/enterprise/uploadVideo', data:{file: this.selectedFile}})
             .then((response) => {
                 //TODO: // /vidoeDetails  {username: '', description: '', title: '', fileId: response.data.id, tags: []}
                 console.log(response);
             }).catch((response) => {
             console.log(response);
+        }).finally((response) => {
+            this.showLoading = false;
         });
     }
 
@@ -66,7 +71,7 @@ export default class enterpriseCtrl {
     }
 }
 
-enterpriseCtrl.$inject = ['$state', 'Upload', 'enterpriseService', 'loginService'];
+enterpriseCtrl.$inject = ['$state', 'Upload', 'enterpriseService', 'loginService', '$stateParams'];
 
 $(document).ready(function () {
     // THE TOP (HEADER) LIST ITEM.
